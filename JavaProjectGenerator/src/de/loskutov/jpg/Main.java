@@ -14,26 +14,40 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
-	
+
 	public static void main(String[] args) throws IOException {
-		File rootDir = new File("./target/generated/");
-        System.out.println("Writing to "  + rootDir.getAbsolutePath());
-        Path root = rootDir.toPath();
-		
-		
+		String pathname = "./target/generated/";
+
+        int roots = 10;
 		int depth = 10;
-		int roots = 10;
 		int classes = 100;
+		if(args.length == 0) {
+			System.out.println("No arguments given, using defaults");
+		} else {
+			try {
+				roots = Integer.parseUnsignedInt(args[0]);
+				depth = Integer.parseUnsignedInt(args[1]);
+				classes = Integer.parseUnsignedInt(args[2]);
+				pathname = args[3];
+			} catch(Exception e) {
+				//
+			}
+		}
+		File rootDir = new File(pathname);
+		Path root = rootDir.toPath();
+		System.out.println("Writing to "  + rootDir.getAbsolutePath());
+		System.out.println("Roots: " + roots + ", depth: " + depth + ", classes & interfaces per package: " + (classes*2));
+		System.out.println("Will generate " + roots + "x" + depth + "x" + classes + "x2 + 2 = " + (depth * roots* classes * 2 + 2) + " files");
 
 		new JavaBuilder(depth, roots, classes, root).build();
 	}
 }
 
 class JavaBuilder {
-	
+
 	static List<String> namesList = IntStream.rangeClosed('a', 'z').mapToObj(x -> String.valueOf((char)x))
 			.collect(Collectors.toList());
-	
+
 	int depth;
 	int roots;
 	private Ring<String> pnames;
@@ -44,7 +58,7 @@ class JavaBuilder {
 	private List<Interface> interfaces;
 
 	private int countClasses;
-	
+
 	public JavaBuilder(int depth, int roots, int countClasses, Path root) {
 		this.depth = depth;
 		this.roots = roots;
@@ -54,7 +68,7 @@ class JavaBuilder {
 		classes = new ArrayList<>();
 		interfaces = new ArrayList<>();
 	}
-	
+
 	void build() throws IOException {
 		Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
 			   @Override
@@ -70,13 +84,13 @@ class JavaBuilder {
 			   }
 			});
 		Files.createDirectories(root);
-		
+
 		List<Package> rootPackages = new ArrayList<>();
 		for (int i = 0; i < roots; i++) {
 			Package p = createPackage(pnames.next(), null);
 			rootPackages.add(p);
 		}
-		
+
 		for (Package r : rootPackages) {
 			Stream<Package> stream = Stream.iterate(r, x -> new Package(pnames.next(), x)).limit(depth);
 			stream.forEach(p -> {
@@ -97,30 +111,30 @@ class JavaBuilder {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	void createInterfaces(Package p) {
 		Ring<Interface> toImplement = new Ring<>(interfaces, countClasses);
 		if(interfaces.isEmpty()) {
 			interfaces.add(new Interface("IFoo0", p.getFqn(), "java.util.concurrent.Callable"));
 		}
-		toImplement.stream().forEach(i -> {				
+		toImplement.stream().forEach(i -> {
 			interfaces.add(new Interface("IFoo" + interfaces.size(), p.getFqn(), toImplement.next().fqn()));
 		});
 	}
-	
+
 	void createClasses(Package p) {
 		Ring<Interface> implement = new Ring<>(interfaces, countClasses);
 		Ring<Clazz> toExtend = new Ring<>(classes, countClasses);
 		if (classes.isEmpty()) {
-			classes.add(new Clazz("Element0", p.getFqn(), implement.next().fqn(), "java.lang.Object"));
+			classes.add(new Clazz("Foo0", p.getFqn(), implement.next().fqn(), "java.lang.Object"));
 		}
 		toExtend.stream().forEach(x -> {
-			classes.add(new Clazz("Element" + classes.size(), p.getFqn(), implement.next().fqn(), toExtend.next().fqn()));
+			classes.add(new Clazz("Foo" + classes.size(), p.getFqn(), implement.next().fqn(), toExtend.next().fqn()));
 		});
 	}
-	
+
 	Package createPackage(String name, Package parent) {
 		return new Package(name, parent);
 	}
-	
+
 }

@@ -11,10 +11,11 @@ public class Interface extends JavaElement {
 
 	@Override
 	String generateCode() {
+		String type = genTypes.next();
 		String s = "package " + packageName + ";\n\n" + 
 				"import " + imports.next() + ";\n\n" +
 				"@SuppressWarnings(\"all\")\n" +
-				"public interface " + name + "<E> extends " + extend + "<E> {\n\n" + 
+				"public interface " + name + "<"+type+"> extends " + extend + "<"+type+"> {\n\n" + 
 
 				     "\t " + fields.next() + " ifield = null;\n\n" +
 					
@@ -22,9 +23,9 @@ public class Interface extends JavaElement {
 					
 					"\t void setName(String s);\n\n" +
 					
-					"\t E get();\n\n" +
+					"\t "+type+" get();\n\n" +
 					
-					"\t void set(E e);\n\n" +
+					"\t void set("+type+" e);\n\n" +
 				"}\n";
 		return s;
 	}

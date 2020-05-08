@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public abstract class JavaElement {
 	
@@ -45,16 +47,18 @@ public abstract class JavaElement {
 			"javax.rmi.ssl.SslRMIClientSocketFactory"
 			);
 	
+	static List<String> LETTERS = IntStream.rangeClosed('A', 'Z').mapToObj(x -> String.valueOf((char)x))
+			.collect(Collectors.toList());
+	
 	String name;
 	String packageName;
-	Ring<String> imports;
-	Ring<String> fields;
+	static Ring<String> imports = new Ring<>(IMPORTS);
+	static Ring<String> fields = new Ring<>(FIELDS); 
+	static Ring<String> genTypes = new Ring<>(LETTERS);
 	
 	JavaElement(String name, String packageName){
 		this.name = name;
 		this.packageName = packageName;
-		imports = new Ring<>(IMPORTS);
-		fields = new Ring<>(FIELDS); 
 	}
 	
 	abstract String generateCode();

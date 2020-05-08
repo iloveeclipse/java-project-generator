@@ -17,11 +17,12 @@ public class Clazz extends JavaElement {
 		if(object) {
 			return generateObject();
 		}
+		String type = genTypes.next();
 		String s = "package " + packageName + ";\n\n" + 
 				"import " + imports.next() + ";\n\n" +
 				"@SuppressWarnings(\"all\")\n" +
-				"public abstract class " + name + "<E> extends " + extend + "<E> implements " + implement + "<E> {\n\n" + 
-					"\t public E element;\n\n" +
+				"public abstract class " + name + "<"+type+"> extends " + extend + "<"+type+"> implements " + implement + "<"+type+"> {\n\n" + 
+					"\t public "+type+" element;\n\n" +
 					"\t public " + fields.next() + " field1;\n\n" +
 					"\t public static " + name + " instance;\n\n" +
 					"\t public static " + name + " getInstance() {\n" +
@@ -37,26 +38,27 @@ public class Clazz extends JavaElement {
 					"\t \t " + extend + ".getInstance().setName(getName());\n" +
 					"\t \t return;\n" +
 					"\t }\n\n" +
-					"\t public E get() {\n" +
-					"\t \t return (E)" + extend + ".getInstance().get();\n" +
+					"\t public "+type+" get() {\n" +
+					"\t \t return ("+type+")" + extend + ".getInstance().get();\n" +
 					"\t }\n\n" +
 					"\t public void set(Object element) {\n" +
-					"\t \t this.element = (E)element;\n" +
+					"\t \t this.element = ("+type+")element;\n" +
 					"\t \t " + extend + ".getInstance().set(this.element);\n" +
 					"\t }\n\n" +
-					"\t public E call() throws Exception {\n" +
-					"\t \t return (E)" + extend + ".getInstance().call();\n" +
+					"\t public "+type+" call() throws Exception {\n" +
+					"\t \t return ("+type+")" + extend + ".getInstance().call();\n" +
 					"\t }\n" +
 				"}\n";
 		return s;
 	}
 	
 	String generateObject() {
+		String type = genTypes.next();
 		String s = "package " + packageName + ";\n" + 
 				"import " + imports.next() + ";\n" +
 				"@SuppressWarnings(\"all\")\n" +
-				"public abstract class " + name + "<E> implements " + implement + "<E> {\n" + 
-					"public E element;\n" +
+				"public abstract class " + name + "<"+type+"> implements " + implement + "<"+type+"> {\n" + 
+					"public "+type+" element;\n" +
 					"public " + fields.next() + " field1;\n" +
 					"public static " + name + " instance;\n" +
 					"public static " + name + " getInstance() {\n" +
@@ -75,16 +77,16 @@ public class Clazz extends JavaElement {
 					"\t return;\n" +
 					"}\n" +
 					
-					"public E get() {\n" +
+					"public "+type+" get() {\n" +
 					"\t return element;\n" +
 					"}\n" +
 					
 					"public void set(Object element) {\n" +
-					"\t this.element = (E)element;\n" +
+					"\t this.element = ("+type+")element;\n" +
 					"}\n" +
 					
-					"public E call() throws Exception {\n" +
-					"\t return (E)getInstance().call();\n" +
+					"public "+type+" call() throws Exception {\n" +
+					"\t return ("+type+")getInstance().call();\n" +
 					"}\n" +
 					"}\n";
 		return s;

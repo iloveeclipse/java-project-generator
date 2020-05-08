@@ -9,11 +9,11 @@ public class Ring<E> {
 	private List<E> choices;
 	int cursor = -1;
 	private int limit;
-	
+
 	Ring(List<E> list){
 		this(list, -1);
 	}
-	
+
 	Ring(List<E> list, int limit){
 		this.limit = limit;
 		if(list instanceof ArrayList) {
@@ -21,9 +21,9 @@ public class Ring<E> {
 		} else {
 			this.choices = new ArrayList<>(list);
 		}
-		Collections.shuffle(choices);
+//		Collections.shuffle(choices);
 	}
-	
+
 	E next() {
 		cursor ++;
 		if(cursor >= choices.size()) {
@@ -31,9 +31,9 @@ public class Ring<E> {
 		}
 		return choices.get(cursor);
 	}
-	
+
 	Stream<E> stream(){
-		if(limit > 0) {			
+		if(limit > 0) {
 			return Stream.generate(() -> next()).limit(limit);
 		}
 		return Stream.generate(() -> next());

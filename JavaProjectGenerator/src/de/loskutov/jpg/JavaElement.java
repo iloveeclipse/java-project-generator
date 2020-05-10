@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class JavaElement {
-	
-	static final List<String> IMPORTS = Arrays.asList( 
+
+	static final List<String> IMPORTS = Arrays.asList(
 			"java.awt.datatransfer.*",
 			"java.beans.beancontext.*",
 			"java.io.*",
@@ -29,7 +29,7 @@ public abstract class JavaElement {
 			"javax.net.ssl.*",
 			"javax.rmi.ssl.*"
 			);
-	
+
 	static final List<String> FIELDS = Arrays.asList(
 			"java.awt.datatransfer.DataFlavor",
 			"java.beans.beancontext.BeanContext",
@@ -46,23 +46,23 @@ public abstract class JavaElement {
 			"javax.net.ssl.ExtendedSSLSession",
 			"javax.rmi.ssl.SslRMIClientSocketFactory"
 			);
-	
-	static List<String> LETTERS = IntStream.rangeClosed('A', 'Z').mapToObj(x -> String.valueOf((char)x))
+
+	static List<String> LETTERS = IntStream.rangeClosed('A', 'B').mapToObj(x -> String.valueOf((char)x))
 			.collect(Collectors.toList());
-	
+
 	String name;
 	String packageName;
 	static Ring<String> imports = new Ring<>(IMPORTS);
-	static Ring<String> fields = new Ring<>(FIELDS); 
+	static Ring<String> fields = new Ring<>(FIELDS);
 	static Ring<String> genTypes = new Ring<>(LETTERS);
-	
+
 	JavaElement(String name, String packageName){
 		this.name = name;
 		this.packageName = packageName;
 	}
-	
+
 	abstract String generateCode();
-	
+
 	void persist(Path root) throws IOException {
 		try(BufferedWriter writer = createWriter(root)){
 			String code = generateCode();
@@ -70,11 +70,11 @@ public abstract class JavaElement {
 			writer.flush();
 		}
 	}
-	
+
 	String fqn() {
 		return packageName + "." + name;
 	}
-	
+
 	BufferedWriter createWriter(Path root) throws IOException {
 		Path path = root.resolve(packageName.replace('.', File.separatorChar)).resolve(name + ".java");
 		Files.createDirectories(path.getParent());

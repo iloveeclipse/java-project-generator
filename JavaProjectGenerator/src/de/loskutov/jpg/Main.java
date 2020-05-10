@@ -2,12 +2,10 @@ package de.loskutov.jpg;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -18,9 +16,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
-        int roots = 10;
+        int roots = 20;
 		int depth = 10;
-		int classes = 100;
+		int classes = 200;
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
 		} else {
@@ -70,19 +68,15 @@ class JavaBuilder {
 	}
 
 	void build() throws IOException {
-		Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
-			   @Override
-			   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-			       Files.delete(file);
-			       return FileVisitResult.CONTINUE;
-			   }
+		// Traverse the file tree in depth-first fashion and delete each file/directory.
+		Files.walk(root).sorted(Comparator.reverseOrder()).forEach(path -> {
+			try {
+				Files.deleteIfExists(path);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 
-			   @Override
-			   public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-			       Files.delete(dir);
-			       return FileVisitResult.CONTINUE;
-			   }
-			});
 		Files.createDirectories(root);
 
 		List<Package> rootPackages = new ArrayList<>();
@@ -118,7 +112,8 @@ class JavaBuilder {
 			interfaces.add(new Interface("IFoo0", p.getFqn(), "java.util.concurrent.Callable"));
 		}
 		toImplement.stream().forEach(i -> {
-			interfaces.add(new Interface("IFoo" + interfaces.size(), p.getFqn(), toImplement.next().fqn()));
+			interfaces.add(new Interface("IFoo" + interfaces.size(), p.getFqn(), "java.util.concurrent.Callable"));
+//			interfaces.add(new Interface("IFoo" + interfaces.size(), p.getFqn(), toImplement.next().fqn()));
 		});
 	}
 
@@ -129,7 +124,8 @@ class JavaBuilder {
 			classes.add(new Clazz("Foo0", p.getFqn(), implement.next().fqn(), "java.lang.Object"));
 		}
 		toExtend.stream().forEach(x -> {
-			classes.add(new Clazz("Foo" + classes.size(), p.getFqn(), implement.next().fqn(), toExtend.next().fqn()));
+//			classes.add(new Clazz("Foo" + classes.size(), p.getFqn(), implement.next().fqn(), toExtend.next().fqn()));
+			classes.add(new Clazz("Foo" + classes.size(), p.getFqn(), implement.next().fqn(), "java.lang.Object"));
 		});
 	}
 

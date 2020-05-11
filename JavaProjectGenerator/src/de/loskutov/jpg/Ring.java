@@ -38,4 +38,8 @@ public class Ring<E> {
 		}
 		return Stream.generate(() -> next());
 	}
+
+	int originalDataSize() {
+		return choices.size();
+	}
 }

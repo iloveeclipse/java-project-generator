@@ -9,6 +9,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -21,8 +22,13 @@ public class Main {
         int roots = 10;
 		int depth = 10;
 		int classes = 100;
-		int fields = 1;
-		int imports = 1;
+
+		int fields = 3;
+		int imports = 3;
+		int comments = 3;
+		int see = 3;
+		int methods = 1;
+
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
 		} else {
@@ -34,6 +40,9 @@ public class Main {
 				classes = Integer.parseUnsignedInt(args[argc++]);
 				fields = Integer.parseUnsignedInt(args[argc++]);
 				imports = Integer.parseUnsignedInt(args[argc++]);
+				comments = Integer.parseUnsignedInt(args[argc++]);
+				see = Integer.parseUnsignedInt(args[argc++]);
+				methods = Integer.parseUnsignedInt(args[argc++]);
 			} catch(Exception e) {
 				//
 			}
@@ -43,11 +52,14 @@ public class Main {
 		System.out.println("Writing to "  + rootDir.getAbsolutePath());
 		System.out.println("Roots: " + roots + ", depth: " + depth +
 				", classes & interfaces per package: " + (classes*2) +
-				", imports+fields per class: " + imports + "+" + fields);
+				", \n imports + fields + comments + methodsx4 per class: " + imports + " + " + fields + " + " + comments + " + " + (methods*4));
 		System.out.println("Will generate " + roots + "x" + depth + "x" + classes + "x2 + 2 = " + (depth * roots* classes * 2 + 2) + " files");
 
 		JavaElement.fieldsCount = fields;
 		JavaElement.importsCount = imports;
+		JavaElement.commentsCount = comments;
+		JavaElement.seeCount = see;
+		JavaElement.methodCounts = methods;
 
 		new JavaBuilder(depth, roots, classes, root).build();
 	}
@@ -96,8 +108,13 @@ class JavaBuilder {
 		Files.createDirectories(root);
 
 		List<Package> rootPackages = new ArrayList<>();
+
 		for (int i = 0; i < roots; i++) {
-			Package p = createPackage(pnames.next(), null);
+			String name = pnames.next();
+			if(i > pnames.originalDataSize()) {
+				name = name + (i - pnames.originalDataSize());
+			}
+			Package p = createPackage(name, null);
 			rootPackages.add(p);
 		}
 
@@ -108,17 +125,19 @@ class JavaBuilder {
 				createClasses(p);
 			});
 		}
+		AtomicLong lines = new AtomicLong();
 		List<JavaElement> elements = new ArrayList<>(interfaces);
 		elements.addAll(classes);
-		elements.forEach(this::generateFile);
-		System.out.println("Generated " + elements.size() + " classes");
+		elements.forEach(t -> lines.addAndGet(generateFile(t)));
+		System.out.println("Generated " + elements.size() + " classes with " + lines + " lines of code");
 	}
 
-	private void generateFile(JavaElement e) {
+	private int generateFile(JavaElement e) {
 		try {
-			e.persist(root);
+			return e.persist(root);
 		} catch (IOException e1) {
 			e1.printStackTrace();
+			return 0;
 		}
 	}
 

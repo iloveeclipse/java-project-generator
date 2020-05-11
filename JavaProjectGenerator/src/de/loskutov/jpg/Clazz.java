@@ -15,81 +15,114 @@ public class Clazz extends JavaElement {
 	String generateCode() {
 		boolean object = "java.lang.Object".equals(extend);
 		if(object) {
-			return generateObject();
+			return generateFirstObject();
 		}
 		String type = genTypes.next();
 		String s = "package " + packageName + ";\n\n" +
 				generateImports() +
+				generateComments() +
 				"@SuppressWarnings(\"all\")\n" +
 				"public abstract class " + name + "<"+type+"> extends " + extend + "<"+type+"> implements " + implement + "<"+type+"> {\n\n" +
-					"\t public "+type+" element;\n\n" +
 					generateFields() +
-					"\t public static " + name + " instance;\n\n" +
-					"\t public static " + name + " getInstance() {\n" +
-					"\t \t return instance;\n" +
-					"\t }\n\n" +
-					"\t public static <T> T create(java.util.List<T> input) {\n" +
-					"\t \t return " + extend + ".create(input);\n" +
-					"\t }\n\n" +
-					"\t public String getName() {\n" +
-					"\t \t return " + extend + ".getInstance().getName();\n" +
-					"\t }\n\n" +
-					"\t public void setName(String string) {\n" +
-					"\t \t " + extend + ".getInstance().setName(getName());\n" +
-					"\t \t return;\n" +
-					"\t }\n\n" +
-					"\t public "+type+" get() {\n" +
-					"\t \t return ("+type+")" + extend + ".getInstance().get();\n" +
-					"\t }\n\n" +
-					"\t public void set(Object element) {\n" +
-					"\t \t this.element = ("+type+")element;\n" +
-					"\t \t " + extend + ".getInstance().set(this.element);\n" +
-					"\t }\n\n" +
-					"\t public "+type+" call() throws Exception {\n" +
-					"\t \t return ("+type+")" + extend + ".getInstance().call();\n" +
-					"\t }\n" +
+					generateClassFields(type) +
+					generateMethods(type) +
 				"}\n";
 		return s;
 	}
 
-	String generateObject() {
+	String generateClassFields(String type) {
+		if(methodCounts == 0) {
+			return "";
+		}
+		String result =
+				"\t public "+type+" element;\n\n" +
+				"\t public static " + name + " instance;\n\n";
+		return result;
+	}
+
+	String generateMethods(String type) {
+		if(methodCounts == 0) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < methodCounts; i++) {
+			String suffix = i == 0? "" : "" + i;
+			String result =	"\t public static " + name + " getInstance" + suffix + "() {\n" +
+				"\t \t return instance;\n" +
+				"\t }\n\n" +
+				"\t public static <T> T create" + suffix + "(java.util.List<T> input) {\n" +
+				"\t \t return " + extend + ".create(input);\n" +
+				"\t }\n\n" +
+				"\t public String getName" + suffix + "() {\n" +
+				"\t \t return " + extend + ".getInstance" + suffix + "().getName" + suffix + "();\n" +
+				"\t }\n\n" +
+				"\t public void setName" + suffix + "(String string) {\n" +
+				"\t \t " + extend + ".getInstance" + suffix + "().setName" + suffix + "(getName" + suffix + "());\n" +
+				"\t \t return;\n" +
+				"\t }\n\n" +
+				"\t public "+type+" get" + suffix + "() {\n" +
+				"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().get" + suffix + "();\n" +
+				"\t }\n\n" +
+				"\t public void set" + suffix + "(Object element) {\n" +
+				"\t \t this.element = ("+type+")element;\n" +
+				"\t \t " + extend + ".getInstance" + suffix + "().set" + suffix + "(this.element);\n" +
+				"\t }\n\n" +
+				"\t public "+type+" call" + suffix + "() throws Exception {\n" +
+				"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().call" + suffix + "();\n" +
+				"\t }\n";
+			sb.append(result);
+		}
+		return sb.toString();
+	}
+
+	String generateFirstObject() {
 		String type = genTypes.next();
 		String s = "package " + packageName + ";\n\n" +
 				generateImports() +
+				generateComments() +
 				"@SuppressWarnings(\"all\")\n" +
 				"public abstract class " + name + "<"+type+"> implements " + implement + "<"+type+"> {\n\n" +
-					"public "+type+" element;\n" +
 					generateFields() +
+					"public "+type+" element;\n" +
 					"public static " + name + " instance;\n\n" +
-					"public static " + name + " getInstance() {\n" +
-					"\t return instance;\n" +
-					"}\n" +
 
-					"public static <T> T create(java.util.List<T> input) {\n" +
-					"\t return null;\n" +
-					"}\n" +
-
-					"public String getName() {\n" +
-					"\t return element.toString();\n" +
-					"}\n" +
-
-					"public void setName(String string) {\n" +
-					"\t return;\n" +
-					"}\n" +
-
-					"public "+type+" get() {\n" +
-					"\t return element;\n" +
-					"}\n" +
-
-					"public void set(Object element) {\n" +
-					"\t this.element = ("+type+")element;\n" +
-					"}\n" +
-
-					"public "+type+" call() throws Exception {\n" +
-					"\t return ("+type+")getInstance().call();\n" +
-					"}\n" +
+					generateObjectMethods(type) +
 					"}\n";
 		return s;
+	}
+
+	String generateObjectMethods(String type) {
+		if(methodCounts == 0) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < methodCounts; i++) {
+			String suffix = i == 0? "" : "" + i;
+			String result =
+				"\t public static " + name + " getInstance" + suffix + "() {\n" +
+				"\t \t return instance;\n" +
+				"\t }\n\n" +
+				"\t public static <T> T create" + suffix + "(java.util.List<T> input) {\n" +
+				"\t \t return null;\n" +
+				"\t }\n\n" +
+				"\t public String getName" + suffix + "() {\n" +
+				"\t \t return element.toString();\n" +
+				"\t }\n\n" +
+				"\t public void setName" + suffix + "(String string) {\n" +
+				"\t \t return;\n" +
+				"\t }\n\n" +
+				"\t public "+type+" get" + suffix + "() {\n" +
+				"\t \t return element;\n" +
+				"\t }\n\n" +
+				"\t public void set" + suffix + "(Object element) {\n" +
+				"\t \t this.element = ("+type+")element;\n" +
+				"\t }\n\n" +
+				"\t public "+type+" call" + suffix + "() throws Exception {\n" +
+				"\t \t return ("+type+")getInstance" + suffix + "().call" + suffix + "();\n" +
+				"\t }\n";
+			sb.append(result);
+		}
+		return sb.toString();
 	}
 
 }

@@ -12,8 +12,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class JavaElement {
-	
-	static final List<String> IMPORTS = Arrays.asList( 
+
+	static int fieldsCount = 3;
+	static int importsCount = 3;
+
+	static final List<String> IMPORTS = Arrays.asList(
 			"java.awt.datatransfer.*",
 			"java.beans.beancontext.*",
 			"java.io.*",
@@ -29,7 +32,7 @@ public abstract class JavaElement {
 			"javax.net.ssl.*",
 			"javax.rmi.ssl.*"
 			);
-	
+
 	static final List<String> FIELDS = Arrays.asList(
 			"java.awt.datatransfer.DataFlavor",
 			"java.beans.beancontext.BeanContext",
@@ -46,23 +49,39 @@ public abstract class JavaElement {
 			"javax.net.ssl.ExtendedSSLSession",
 			"javax.rmi.ssl.SslRMIClientSocketFactory"
 			);
-	
-	static List<String> LETTERS = IntStream.rangeClosed('A', 'Z').mapToObj(x -> String.valueOf((char)x))
+
+	static final List<String> LETTERS = IntStream.rangeClosed('A', 'Z').mapToObj(x -> String.valueOf((char)x))
 			.collect(Collectors.toList());
-	
+
 	String name;
 	String packageName;
-	static Ring<String> imports = new Ring<>(IMPORTS);
-	static Ring<String> fields = new Ring<>(FIELDS); 
-	static Ring<String> genTypes = new Ring<>(LETTERS);
-	
+	static final Ring<String> imports = new Ring<>(IMPORTS);
+	static final Ring<String> fields = new Ring<>(FIELDS);
+	static final Ring<String> genTypes = new Ring<>(LETTERS);
+
 	JavaElement(String name, String packageName){
 		this.name = name;
 		this.packageName = packageName;
 	}
-	
+
 	abstract String generateCode();
-	
+
+	String generateImports() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < importsCount; i++) {
+			sb.append("import ").append(imports.next()).append(";\n\n");
+		}
+		return sb.toString();
+	}
+
+	String generateFields() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < fieldsCount; i++) {
+			sb.append("\t ").append(fields.next()).append(" f").append(i).append(" = null;\n\n");
+		}
+		return sb.toString();
+	}
+
 	void persist(Path root) throws IOException {
 		try(BufferedWriter writer = createWriter(root)){
 			String code = generateCode();
@@ -70,11 +89,11 @@ public abstract class JavaElement {
 			writer.flush();
 		}
 	}
-	
+
 	String fqn() {
 		return packageName + "." + name;
 	}
-	
+
 	BufferedWriter createWriter(Path root) throws IOException {
 		Path path = root.resolve(packageName.replace('.', File.separatorChar)).resolve(name + ".java");
 		Files.createDirectories(path.getParent());

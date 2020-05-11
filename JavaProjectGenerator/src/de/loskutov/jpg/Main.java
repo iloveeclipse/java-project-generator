@@ -21,14 +21,19 @@ public class Main {
         int roots = 10;
 		int depth = 10;
 		int classes = 100;
+		int fields = 1;
+		int imports = 1;
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
 		} else {
 			try {
-				roots = Integer.parseUnsignedInt(args[0]);
-				depth = Integer.parseUnsignedInt(args[1]);
-				classes = Integer.parseUnsignedInt(args[2]);
-				pathname = args[3];
+				int argc = 0;
+				pathname = args[argc++];
+				roots = Integer.parseUnsignedInt(args[argc++]);
+				depth = Integer.parseUnsignedInt(args[argc++]);
+				classes = Integer.parseUnsignedInt(args[argc++]);
+				fields = Integer.parseUnsignedInt(args[argc++]);
+				imports = Integer.parseUnsignedInt(args[argc++]);
 			} catch(Exception e) {
 				//
 			}
@@ -36,8 +41,13 @@ public class Main {
 		File rootDir = new File(pathname);
 		Path root = rootDir.toPath();
 		System.out.println("Writing to "  + rootDir.getAbsolutePath());
-		System.out.println("Roots: " + roots + ", depth: " + depth + ", classes & interfaces per package: " + (classes*2));
+		System.out.println("Roots: " + roots + ", depth: " + depth +
+				", classes & interfaces per package: " + (classes*2) +
+				", imports+fields per class: " + imports + "+" + fields);
 		System.out.println("Will generate " + roots + "x" + depth + "x" + classes + "x2 + 2 = " + (depth * roots* classes * 2 + 2) + " files");
+
+		JavaElement.fieldsCount = fields;
+		JavaElement.importsCount = imports;
 
 		new JavaBuilder(depth, roots, classes, root).build();
 	}

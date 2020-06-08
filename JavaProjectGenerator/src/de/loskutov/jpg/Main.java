@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -86,7 +87,9 @@ class JavaBuilder {
 		this.roots = roots;
 		this.countClasses = countClasses;
 		this.root = root;
-		pnames = new Ring<>(namesList);
+		List<String> reversed = new ArrayList<>(namesList);
+		Collections.reverse(reversed);
+		pnames = new Ring<>(new Ring<>(namesList), new Ring<>(reversed));
 		classes = new ArrayList<>();
 		interfaces = new ArrayList<>();
 	}

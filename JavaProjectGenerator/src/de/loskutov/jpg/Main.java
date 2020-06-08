@@ -28,6 +28,7 @@ public class Main {
 		int comments = 3;
 		int see = 3;
 		int methods = 1;
+		boolean extend = false;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
@@ -60,6 +61,7 @@ public class Main {
 		JavaElement.commentsCount = comments;
 		JavaElement.seeCount = see;
 		JavaElement.methodCounts = methods;
+		JavaElement.useExtend = extend;
 
 		new JavaBuilder(depth, roots, classes, root).build();
 	}

@@ -15,13 +15,23 @@ public class Interface extends JavaElement {
 		String s = "package " + packageName + ";\n\n" +
 				generateImports() +
 				generateComments() +
-				"@SuppressWarnings(\"all\")\n" +
-				"public interface " + name + "<"+type+"> extends " + extend + "<"+type+"> {\n\n" +
+				generateTypeDefinition(type) +
+				"{\n\n" +
 					generateFields() +
 					generateMethods(type) +
 				"}\n";
 		return s;
 	}
+
+	String generateTypeDefinition(String type) {
+		if(useExtend) {
+			return "@SuppressWarnings(\"all\")\n" +
+					"public interface " + name + "<"+type+"> extends " + extend + "<"+type+"> ";
+		}
+		return "@SuppressWarnings(\"all\")\n" +
+				"public interface " + name + "<"+type+"> ";
+	}
+
 
 	String generateMethods(String type) {
 		if(methodCounts == 0) {

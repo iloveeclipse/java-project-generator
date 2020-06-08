@@ -21,13 +21,13 @@ public class Main {
 
         int roots = 10;
 		int depth = 10;
-		int classes = 100;
+		int classes = 1000;
 
-		int fields = 3;
-		int imports = 3;
-		int comments = 3;
-		int see = 3;
-		int methods = 1;
+		int fields = 0;
+		int imports = 0;
+		int comments = 0;
+		int see = 0;
+		int methods = 0;
 		boolean extend = false;
 
 		if(args.length == 0) {

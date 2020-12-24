@@ -26,7 +26,7 @@ public class Interface extends JavaElement {
 	String generateTypeDefinition(String type) {
 		if(useExtend) {
 			return "@SuppressWarnings(\"all\")\n" +
-					"public interface " + name + "<"+type+"> extends " + extend + "<"+type+"> ";
+					"public interface " + name + "<"+type+"> extends " + extend + "<"+type+">, Runnable ";
 		}
 		return "@SuppressWarnings(\"all\")\n" +
 				"public interface " + name + "<"+type+"> ";

@@ -76,7 +76,14 @@ public class Clazz extends JavaElement {
 				"\t \t this.element = ("+type+")element;\n" +
 				"\t \t " + extend + ".getInstance" + suffix + "().set" + suffix + "(this.element);\n" +
 				"\t }\n\n" +
+				"\t public void run" + suffix + "() {\n" +
+				"\t \t try {\n" +
+				"\t \t \t this.call" + suffix + "();\n" +
+				"\t \t } catch (Exception e) {}\n" +
+				"\t \t " + extend + ".getInstance" + suffix + "().run();\n" +
+				"\t }\n\n" +
 				"\t public "+type+" call" + suffix + "() throws Exception {\n" +
+				"\t \t " + extend + ".getInstance" + suffix + "().run();\n" +
 				"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().call" + suffix + "();\n" +
 				"\t }\n";
 			sb.append(result);

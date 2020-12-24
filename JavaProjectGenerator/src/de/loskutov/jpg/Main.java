@@ -19,16 +19,16 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
-        int roots = 10;
-		int depth = 10;
+        int roots = 3;
+		int depth = 30;
 		int classes = 100;
 
-		int fields = 3;
-		int imports = 3;
-		int comments = 3;
-		int see = 3;
-		int methods = 1;
-		boolean extend = false;
+		int fields = 1;
+		int imports = 0;
+		int comments = 0;
+		int see = 0;
+		int methods = 2;
+		boolean extend = true;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");

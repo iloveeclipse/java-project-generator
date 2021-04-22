@@ -28,7 +28,7 @@ public class Main {
 		int comments = 3;
 		int see = 3;
 		int methods = 1;
-		boolean extend = false;
+		boolean extend = true;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
@@ -108,6 +108,7 @@ class JavaBuilder {
 			   }
 			});
 		Files.createDirectories(root);
+		Files.createFile(root.resolve(".empty_dir_placeholder"));
 
 		List<Package> rootPackages = new ArrayList<>();
 

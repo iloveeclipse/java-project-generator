@@ -80,11 +80,29 @@ public class Clazz extends JavaElement {
 				"\t \t try {\n" +
 				"\t \t \t this.call" + suffix + "();\n" +
 				"\t \t } catch (Exception e) {}\n" +
+				"\t \t " + "Runnable r = () -> {\n" +
+			 	"\t \t " + "    run" + suffix + "();\n" + 
+			 	"\t \t " + "    set(this);\n" +
+			 	"\t \t " + "    get();\n" +
+			 	"\t \t " + "};\n" + 
+			 	"\t \t " + "r.run();\n" +
+			 	"\t \t " + "r = this::run;\n" +
+			 	"\t \t " + "r.run();\n" +
+			 	"\t \t " + "r = " + extend + ".instance::run;\n" +
+			 	"\t \t " + "r.run();\n" +
 				"\t \t " + extend + ".getInstance" + suffix + "().run();\n" +
 				"\t }\n\n" +
 				"\t public "+type+" call" + suffix + "() throws Exception {\n" +
-				"\t \t " + extend + ".getInstance" + suffix + "().run();\n" +
-				"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().call" + suffix + "();\n" +
+				"\t \t " + extend + ".getInstance" + suffix + "().call();\n" +
+				"\t \t " + "java.util.concurrent.Callable<?> c = () -> {\n" +
+			 	"\t \t " + "    call" + suffix + "();\n" + 
+			 	"\t \t " + "    set(this);\n" +
+			 	"\t \t " + "    return get();\n" +
+			 	"\t \t " + "};\n" + 
+			 	"\t \t " + "c.call();\n" +
+			 	"\t \t " + "c = " + extend + ".getInstance" + suffix + "()::call;\n" +
+			 	"\t \t " + "c.call();\n" +
+			 	"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().call" + suffix + "();\n" +
 				"\t }\n";
 			sb.append(result);
 		}

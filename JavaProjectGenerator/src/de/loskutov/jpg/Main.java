@@ -19,15 +19,17 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
+		// 10 x 10 x 500 x 2 + 2 = 100002 files
+		// Config below is 97301990 lines big according to compiler
         int roots = 10;
 		int depth = 10;
-		int classes = 100;
+		int classes = 500;
 
-		int fields = 3;
-		int imports = 3;
-		int comments = 3;
-		int see = 3;
-		int methods = 1;
+		int fields = 10;
+		int imports = 10;
+		int comments = 300;
+		int see = 10;
+		int methods = 20;
 		boolean extend = true;
 
 		if(args.length == 0) {

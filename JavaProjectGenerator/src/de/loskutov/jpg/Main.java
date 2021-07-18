@@ -21,7 +21,7 @@ public class Main {
 
         int roots = 10;
 		int depth = 10;
-		int classes = 100;
+		int classes = 50;
 
 		int fields = 3;
 		int imports = 3;

@@ -20,7 +20,7 @@ public class Main {
 		String pathname = "./target/generated/";
 
         int roots = 10;
-		int depth = 10;
+		int depth = 5;
 		int classes = 100;
 
 		int fields = 3;

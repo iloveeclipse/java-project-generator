@@ -40,20 +40,20 @@ public abstract class JavaElement {
 			);
 
 	static final List<String> FIELDS = Arrays.asList(
-			"java.awt.datatransfer.DataFlavor",
-			"java.beans.beancontext.BeanContext",
-			"java.io.File",
-			"java.rmi.Remote",
-			"java.nio.file.FileStore",
-			"java.sql.Array",
-			"java.util.logging.Filter",
-			"java.util.zip.Deflater",
-			"javax.annotation.processing.Completion",
-			"javax.lang.model.AnnotatedConstruct",
-			"javax.management.Attribute",
-			"javax.naming.directory.DirContext",
-			"javax.net.ssl.ExtendedSSLSession",
-			"javax.rmi.ssl.SslRMIClientSocketFactory"
+			"java.awt.datatransfer.DataFlavor;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"java.beans.beancontext.BeanContex;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;t",
+			"java.io.File;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"java.rmi.Remote;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"java.nio.file.FileStore;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"java.sql.Array;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"java.util.logging.Filter;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"java.util.zip.Deflater;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"javax.annotation.processing.Completion;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"javax.lang.model.AnnotatedConstruct;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"javax.management.Attribute;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"javax.naming.directory.DirContext;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"javax.net.ssl.ExtendedSSLSession;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;",
+			"javax.rmi.ssl.SslRMIClientSocketFactory;a1;b1;a2;b2;a3;b3;a4;b4;a5;b5;a6;b6;a7;b7;a8;b8;a9;b9;"
 			);
 
 	static final List<String> LOREM = Arrays.asList(

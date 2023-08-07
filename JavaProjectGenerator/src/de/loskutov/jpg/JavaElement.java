@@ -20,6 +20,7 @@ public abstract class JavaElement {
 	static int commentsCount = 3;
 	static int seeCount = 3;
 	static int methodCounts = 1;
+	static int runnablesAndCallablesCounts = 1;
 	static boolean useExtend = true;
 
 	static final List<String> IMPORTS = Arrays.asList(

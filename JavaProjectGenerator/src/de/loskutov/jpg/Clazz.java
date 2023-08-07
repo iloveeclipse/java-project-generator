@@ -75,8 +75,13 @@ public class Clazz extends JavaElement {
 				"\t public void set" + suffix + "(Object element) {\n" +
 				"\t \t this.element = ("+type+")element;\n" +
 				"\t \t " + extend + ".getInstance" + suffix + "().set" + suffix + "(this.element);\n" +
-				"\t }\n\n" +
-				"\t public void run" + suffix + "() {\n" +
+				"\t }\n\n";
+			sb.append(result);
+		}
+		if(methodCounts > 0) {
+			for (int i = 0; i < runnablesAndCallablesCounts; i++) {
+				String suffix = i == 0? "" : "" + i;
+				String result =	 "\t public void run" + suffix + "() {\n" +
 				"\t \t try {\n" +
 				"\t \t \t this.call" + suffix + "();\n" +
 				"\t \t } catch (Exception e) {}\n" +
@@ -91,20 +96,25 @@ public class Clazz extends JavaElement {
 			 	"\t \t " + "r = " + extend + ".instance::run;\n" +
 			 	"\t \t " + "r.run();\n" +
 				"\t \t " + extend + ".getInstance" + suffix + "().run();\n" +
-				"\t }\n\n" +
-				"\t public "+type+" call" + suffix + "() throws Exception {\n" +
-				"\t \t " + extend + ".getInstance" + suffix + "().call();\n" +
-				"\t \t " + "java.util.concurrent.Callable<?> c = () -> {\n" +
-			 	"\t \t " + "    call" + suffix + "();\n" + 
-			 	"\t \t " + "    set(this);\n" +
-			 	"\t \t " + "    return get();\n" +
-			 	"\t \t " + "};\n" + 
-			 	"\t \t " + "c.call();\n" +
-			 	"\t \t " + "c = " + extend + ".getInstance" + suffix + "()::call;\n" +
-			 	"\t \t " + "c.call();\n" +
-			 	"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().call" + suffix + "();\n" +
-				"\t }\n";
-			sb.append(result);
+				"\t }\n\n";
+				sb.append(result);
+			}
+			for (int i = 0; i < runnablesAndCallablesCounts; i++) {
+				String suffix = i == 0? "" : "" + i;
+				String result =	"\t public "+type+" call" + suffix + "() throws Exception {\n" +
+						"\t \t " + extend + ".getInstance" + suffix + "().call();\n" +
+						"\t \t " + "java.util.concurrent.Callable<?> c = () -> {\n" +
+					 	"\t \t " + "    call" + suffix + "();\n" + 
+					 	"\t \t " + "    set(this);\n" +
+					 	"\t \t " + "    return get();\n" +
+					 	"\t \t " + "};\n" + 
+					 	"\t \t " + "c.call();\n" +
+					 	"\t \t " + "c = " + extend + ".getInstance" + suffix + "()::call;\n" +
+					 	"\t \t " + "c.call();\n" +
+					 	"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().call" + suffix + "();\n" +
+						"\t }\n\n";
+				sb.append(result);
+			}
 		}
 		return sb.toString();
 	}

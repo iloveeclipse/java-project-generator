@@ -27,7 +27,8 @@ public class Main {
 		int imports = 3;
 		int comments = 3;
 		int see = 3;
-		int methods = 1;
+		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
+		int runnablesAndCallables = 1;
 		boolean extend = true;
 
 		if(args.length == 0) {
@@ -44,6 +45,7 @@ public class Main {
 				comments = Integer.parseUnsignedInt(args[argc++]);
 				see = Integer.parseUnsignedInt(args[argc++]);
 				methods = Integer.parseUnsignedInt(args[argc++]);
+				runnablesAndCallables = Integer.parseUnsignedInt(args[argc++]);
 			} catch(Exception e) {
 				//
 			}
@@ -61,6 +63,7 @@ public class Main {
 		JavaElement.commentsCount = comments;
 		JavaElement.seeCount = see;
 		JavaElement.methodCounts = methods;
+		JavaElement.runnablesAndCallablesCounts = runnablesAndCallables;
 		JavaElement.useExtend = extend;
 
 		new JavaBuilder(depth, roots, classes, root).build();

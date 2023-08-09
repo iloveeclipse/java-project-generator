@@ -31,12 +31,14 @@ public class Clazz extends JavaElement {
 	}
 
 	String generateTypeDefinition(String type) {
-		if(useExtend) {
-			return "@SuppressWarnings(\"all\")\n" +
-					"public abstract class " + name + "<"+type+"> extends " + extend + "<"+type+"> implements " + implement + "<"+type+"> ";
+		String result = "";
+		if (hideWarnings) {
+			result = "@SuppressWarnings(\"all\")\n";
 		}
-		return "@SuppressWarnings(\"all\")\n" +
-				"public abstract class " + name + "<"+type+"> ";
+		if(useExtend) {
+			return result +	"public abstract class " + name + "<"+type+"> extends " + extend + "<"+type+"> implements " + implement + "<"+type+"> ";
+		}
+		return result +	"public abstract class " + name + "<"+type+"> ";
 	}
 
 	String generateClassFields(String type) {

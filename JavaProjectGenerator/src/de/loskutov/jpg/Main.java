@@ -30,6 +30,7 @@ public class Main {
 		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
 		int runnablesAndCallables = 1;
 		boolean extend = true;
+		boolean hideWarnings = true;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
@@ -65,6 +66,7 @@ public class Main {
 		JavaElement.methodCounts = methods;
 		JavaElement.runnablesAndCallablesCounts = runnablesAndCallables;
 		JavaElement.useExtend = extend;
+		JavaElement.hideWarnings = hideWarnings;
 
 		new JavaBuilder(depth, roots, classes, root).build();
 	}

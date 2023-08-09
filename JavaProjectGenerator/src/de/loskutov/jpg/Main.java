@@ -19,9 +19,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
-        int roots = 10;
-		int depth = 10;
-		int classes = 100;
+        int roots = 1;
+		int depth = 5;
+		int classes = 1100;
 
 		int fields = 3;
 		int imports = 3;
@@ -30,7 +30,7 @@ public class Main {
 		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
 		int runnablesAndCallables = 1;
 		boolean extend = true;
-		boolean hideWarnings = true;
+		boolean hideWarnings = false;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");

@@ -19,18 +19,18 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
-        int roots = 10;
-		int depth = 10;
-		int classes = 100;
+        int roots = 1;
+		int depth = 2;
+		int classes = 750;
 
-		int fields = 3;
-		int imports = 3;
-		int comments = 3;
-		int see = 3;
-		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
-		int runnablesAndCallables = 1;
+		int fields = 1;
+		int imports = 1;
+		int comments = 1;
+		int see = 1;
+		int methods = 4200; // result method count will be (methods x 6 + runnablesAndCallables x 2)
+		int runnablesAndCallables = 0;
 		boolean extend = true;
-		boolean hideWarnings = true;
+		boolean hideWarnings = false;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");

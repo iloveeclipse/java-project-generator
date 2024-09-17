@@ -83,37 +83,39 @@ public class Clazz extends JavaElement {
 		if(methodCounts > 0) {
 			for (int i = 0; i < runnablesAndCallablesCounts; i++) {
 				String suffix = i == 0? "" : "" + i;
+				String getInstanceIdx = i == 0 || methodCounts == 1? "" : "" + Math.min(i, methodCounts - 1);
 				String result =	 "\t public void run" + suffix + "() {\n" +
 				"\t \t try {\n" +
 				"\t \t \t this.call" + suffix + "();\n" +
 				"\t \t } catch (Exception e) {}\n" +
 				"\t \t " + "Runnable r = () -> {\n" +
-			 	"\t \t " + "    run" + suffix + "();\n" + 
+			 	"\t \t " + "    run" + suffix + "();\n" +
 			 	"\t \t " + "    set(this);\n" +
 			 	"\t \t " + "    get();\n" +
-			 	"\t \t " + "};\n" + 
+			 	"\t \t " + "};\n" +
 			 	"\t \t " + "r.run();\n" +
 			 	"\t \t " + "r = this::run;\n" +
 			 	"\t \t " + "r.run();\n" +
 			 	"\t \t " + "r = " + extend + ".instance::run;\n" +
 			 	"\t \t " + "r.run();\n" +
-				"\t \t " + extend + ".getInstance" + suffix + "().run();\n" +
+				"\t \t " + extend + ".getInstance" + getInstanceIdx + "().run();\n" +
 				"\t }\n\n";
 				sb.append(result);
 			}
 			for (int i = 0; i < runnablesAndCallablesCounts; i++) {
 				String suffix = i == 0? "" : "" + i;
+				String getInstanceIdx = i == 0 || methodCounts == 1? "" : "" + Math.min(i, methodCounts - 1);
 				String result =	"\t public "+type+" call" + suffix + "() throws Exception {\n" +
-						"\t \t " + extend + ".getInstance" + suffix + "().call();\n" +
+						"\t \t " + extend + ".getInstance" + getInstanceIdx + "().call();\n" +
 						"\t \t " + "java.util.concurrent.Callable<?> c = () -> {\n" +
-					 	"\t \t " + "    call" + suffix + "();\n" + 
+					 	"\t \t " + "    call" + suffix + "();\n" +
 					 	"\t \t " + "    set(this);\n" +
 					 	"\t \t " + "    return get();\n" +
-					 	"\t \t " + "};\n" + 
+					 	"\t \t " + "};\n" +
 					 	"\t \t " + "c.call();\n" +
-					 	"\t \t " + "c = " + extend + ".getInstance" + suffix + "()::call;\n" +
+					 	"\t \t " + "c = " + extend + ".getInstance" + getInstanceIdx + "()::call;\n" +
 					 	"\t \t " + "c.call();\n" +
-					 	"\t \t return ("+type+")" + extend + ".getInstance" + suffix + "().call" + suffix + "();\n" +
+					 	"\t \t return ("+type+")" + extend + ".getInstance" + getInstanceIdx + "().call" + getInstanceIdx + "();\n" +
 						"\t }\n\n";
 				sb.append(result);
 			}

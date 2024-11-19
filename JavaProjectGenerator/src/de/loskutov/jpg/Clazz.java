@@ -107,14 +107,14 @@ public class Clazz extends JavaElement {
 				String getInstanceIdx = i == 0 || methodCounts == 1? "" : "" + Math.min(i, methodCounts - 1);
 				String result =	"\t public "+type+" call" + suffix + "() throws Exception {\n" +
 						"\t \t " + extend + ".getInstance" + getInstanceIdx + "().call();\n" +
-						"\t \t " + "java.util.concurrent.Callable<?> c = () -> {\n" +
+						"\t \t " + "java.util.concurrent.Callable<?> callable = () -> {\n" +
 					 	"\t \t " + "    call" + suffix + "();\n" +
 					 	"\t \t " + "    set(this);\n" +
 					 	"\t \t " + "    return get();\n" +
 					 	"\t \t " + "};\n" +
-					 	"\t \t " + "c.call();\n" +
-					 	"\t \t " + "c = " + extend + ".getInstance" + getInstanceIdx + "()::call;\n" +
-					 	"\t \t " + "c.call();\n" +
+					 	"\t \t " + "callable.call();\n" +
+					 	"\t \t " + "callable = " + extend + ".getInstance" + getInstanceIdx + "()::call;\n" +
+					 	"\t \t " + "callable.call();\n" +
 					 	"\t \t return ("+type+")" + extend + ".getInstance" + getInstanceIdx + "().call" + getInstanceIdx + "();\n" +
 						"\t }\n\n";
 				sb.append(result);

@@ -157,7 +157,7 @@ class JavaBuilder {
 	void createInterfaces(Package p) {
 		Ring<Interface> toImplement = new Ring<>(interfaces, countClasses);
 		if(interfaces.isEmpty()) {
-			interfaces.add(new Interface("IFoo0", p.getFqn(), "java.util.concurrent.Callable"));
+			interfaces.add(new Interface("IFoo0", p.getFqn(), "java.util.function.Function"));
 		}
 		toImplement.stream().forEach(i -> {
 			interfaces.add(new Interface("IFoo" + interfaces.size(), p.getFqn(), toImplement.next().fqn()));

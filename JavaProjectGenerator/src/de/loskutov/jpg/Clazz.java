@@ -21,7 +21,7 @@ public class Clazz extends JavaElement {
 		String s = "package " + packageName + ";\n\n" +
 				generateImports() +
 				generateComments() +
-				generateTypeDefinition(type) +
+				generateTypeDefinition(type + ", " + genTypes.next()) +
 				"{\n\n" +
 					generateFields() +
 					generateClassFields(type) +
@@ -107,14 +107,14 @@ public class Clazz extends JavaElement {
 				String getInstanceIdx = i == 0 || methodCounts == 1? "" : "" + Math.min(i, methodCounts - 1);
 				String result =	"\t public "+type+" call" + suffix + "() throws Exception {\n" +
 						"\t \t " + extend + ".getInstance" + getInstanceIdx + "().call();\n" +
-						"\t \t " + "java.util.concurrent.Callable<?> callable = () -> {\n" +
+						"\t \t " + "java.util.concurrent.Callable<? extends "+ type +"> callable = () -> {\n" +
 					 	"\t \t " + "    call" + suffix + "();\n" +
 					 	"\t \t " + "    set(this);\n" +
 					 	"\t \t " + "    return get();\n" +
 					 	"\t \t " + "};\n" +
 					 	"\t \t " + "callable.call();\n" +
-					 	"\t \t " + "callable = " + extend + ".getInstance" + getInstanceIdx + "()::call;\n" +
-					 	"\t \t " + "callable.call();\n" +
+					 	"\t \t " + "java.util.concurrent.Callable callable2 = " + extend + ".getInstance" + getInstanceIdx + "()::call;\n" +
+					 	"\t \t " + "callable2.call();\n" +
 					 	"\t \t return ("+type+")" + extend + ".getInstance" + getInstanceIdx + "().call" + getInstanceIdx + "();\n" +
 						"\t }\n\n";
 				sb.append(result);
@@ -125,11 +125,12 @@ public class Clazz extends JavaElement {
 
 	String generateFirstObject() {
 		String type = genTypes.next();
+		String types = type + ", " + genTypes.next();
 		String s = "package " + packageName + ";\n\n" +
 				generateImports() +
 				generateComments() +
 				"@SuppressWarnings(\"all\")\n" +
-				"public abstract class " + name + "<"+type+"> implements " + implement + "<"+type+"> {\n\n" +
+				"public abstract class " + name + "<"+types+"> implements " + implement + "<"+types+"> {\n\n" +
 					generateFields() +
 					"public "+type+" element;\n" +
 					"public static " + name + " instance;\n\n" +

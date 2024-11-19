@@ -24,12 +24,14 @@ public class Interface extends JavaElement {
 	}
 
 	String generateTypeDefinition(String type) {
+		String type2 = genTypes.next();
+		String types = type + ", " + type2;
 		if(useExtend) {
 			return "@SuppressWarnings(\"all\")\n" +
-					"public interface " + name + "<"+type+"> extends " + extend + "<"+type+">, Runnable ";
+					"public interface " + name + "<"+ types + "> extends " + extend + "<"+types+">, Runnable ";
 		}
 		return "@SuppressWarnings(\"all\")\n" +
-				"public interface " + name + "<"+type+"> ";
+				"public interface " + name + "<"+ type + "> ";
 	}
 
 

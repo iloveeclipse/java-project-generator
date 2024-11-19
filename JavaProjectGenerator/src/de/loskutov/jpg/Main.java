@@ -10,6 +10,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -31,6 +32,7 @@ public class Main {
 		int runnablesAndCallables = 1;
 		boolean extend = true;
 		boolean hideWarnings = true;
+		boolean deepNestedTypes = true;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
@@ -68,7 +70,7 @@ public class Main {
 		JavaElement.useExtend = extend;
 		JavaElement.hideWarnings = hideWarnings;
 
-		new JavaBuilder(depth, roots, classes, root).build();
+		new JavaBuilder(depth, roots, classes, root, deepNestedTypes).build();
 	}
 }
 
@@ -88,11 +90,14 @@ class JavaBuilder {
 
 	private int countClasses;
 
-	public JavaBuilder(int depth, int roots, int countClasses, Path root) {
+	private boolean deepNestedTypes;
+
+	public JavaBuilder(int depth, int roots, int countClasses, Path root, boolean deepNestedTypes) {
 		this.depth = depth;
 		this.roots = roots;
 		this.countClasses = countClasses;
 		this.root = root;
+		this.deepNestedTypes = deepNestedTypes;
 		pnames = new Ring<>(namesList);
 		classes = new ArrayList<>();
 		interfaces = new ArrayList<>();
@@ -165,8 +170,19 @@ class JavaBuilder {
 		if (classes.isEmpty()) {
 			classes.add(new Clazz("Foo0", p.getFqn(), implement.next().fqn(), "java.lang.Object"));
 		}
+		AtomicReference<Clazz> last = new AtomicReference<>();
 		toExtend.stream().forEach(x -> {
-			classes.add(new Clazz("Foo" + classes.size(), p.getFqn(), implement.next().fqn(), toExtend.next().fqn()));
+			Clazz clazz;
+			Clazz latClass = last.get();
+			if(deepNestedTypes && latClass != null) {
+				// inherit in a deep chain from previously generated class
+				clazz = new Clazz("Foo" + classes.size(), p.getFqn(), implement.next().fqn(), latClass.fqn());
+			} else {
+				// inherit from random previously generated class
+				clazz = new Clazz("Foo" + classes.size(), p.getFqn(), implement.next().fqn(), toExtend.next().fqn());
+			}
+			last.set(clazz);
+			classes.add(clazz);
 		});
 	}
 

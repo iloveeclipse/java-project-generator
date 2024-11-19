@@ -45,6 +45,8 @@ public abstract class JavaElement {
 			"java.awt.datatransfer.DataFlavor",
 			"java.beans.beancontext.BeanContext",
 			"java.io.File",
+			"java.lang.Object",
+			"java.lang.String",
 			"java.rmi.Remote",
 			"java.nio.file.FileStore",
 			"java.sql.Array",

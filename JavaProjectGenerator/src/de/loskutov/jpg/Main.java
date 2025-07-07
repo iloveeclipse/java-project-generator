@@ -20,9 +20,9 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
-        int roots = 10;
-		int depth = 10;
-		int classes = 100;
+        int roots = 1;
+		int depth = 1;
+		int classes = 50;
 
 		int fields = 3;
 		int imports = 3;

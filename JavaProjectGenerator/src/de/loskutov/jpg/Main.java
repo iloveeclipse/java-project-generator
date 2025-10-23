@@ -20,14 +20,14 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
-        int roots = 10;
+        int roots = 1;
 		int depth = 10;
 		int classes = 100;
 
-		int fields = 3;
-		int imports = 3;
-		int comments = 3;
-		int see = 3;
+		int fields = 0;
+		int imports = 0;
+		int comments = 0;
+		int see = 0;
 		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
 		int runnablesAndCallables = 1;
 		boolean extend = true;

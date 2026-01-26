@@ -23,6 +23,7 @@ public abstract class JavaElement {
 	static int runnablesAndCallablesCounts = 1;
 	static boolean useExtend = true;
 	static boolean hideWarnings = true;
+	static boolean deprecate = true;
 
 	static final List<String> IMPORTS = Arrays.asList(
 			"java.awt.datatransfer.*",

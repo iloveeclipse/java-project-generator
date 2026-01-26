@@ -35,6 +35,9 @@ public class Clazz extends JavaElement {
 		if (hideWarnings) {
 			result = "@SuppressWarnings(\"all\")\n";
 		}
+		if (deprecate) {
+			result += "@Deprecated(forRemoval=true, since=\"some version\")\n";
+		}
 		if(useExtend) {
 			return result +	"public abstract class " + name + "<"+type+"> extends " + extend + "<"+type+"> implements " + implement + "<"+type+"> ";
 		}

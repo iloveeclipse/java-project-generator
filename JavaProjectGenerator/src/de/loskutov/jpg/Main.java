@@ -22,11 +22,11 @@ public class Main {
 
         int roots = 3;
 		int depth = 2;
-		int classes = 10;
+		int classes = 100;
 
 		int fields = 3;
 		int imports = 3;
-		int comments = 3;
+		int comments = 300;
 		int see = 3;
 		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
 		int runnablesAndCallables = 1;

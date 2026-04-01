@@ -27,8 +27,12 @@ public class Interface extends JavaElement {
 		String type2 = genTypes.next();
 		String types = type + ", " + type2;
 		if(useExtend) {
+			String extendTypes = types;
+			if("java.util.function.Function".equals(extend)) {
+				extendTypes = "Object, Object";
+			}
 			return "@SuppressWarnings(\"all\")\n" +
-					"public interface " + name + "<"+ types + "> extends " + extend + "<"+types+">, Runnable ";
+					"public interface " + name + "<"+ types + "> extends " + extend + "<"+extendTypes+">, Runnable ";
 		}
 		return "@SuppressWarnings(\"all\")\n" +
 				"public interface " + name + "<"+ type + "> ";

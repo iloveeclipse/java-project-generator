@@ -17,20 +17,23 @@ public class Clazz extends JavaElement {
 		if(object) {
 			return generateFirstObject();
 		}
-		String type = genTypes.next();
+		String genType = genTypes.next();
+		if (addTest) {
+			genType = "java.lang.Object";
+		}
 		String s = "package " + packageName + ";\n\n" +
 				generateImports() +
 				generateComments() +
-				generateTypeDefinition(type + ", " + genTypes.next()) +
+				generateTypeDefinition(genType + ", " + genTypes.next()) +
 				"{\n\n" +
 					generateFields() +
-					generateClassFields(type) +
-					generateMethods(type) +
+					generateClassFields(genType) +
+					generateMethods(genType) +
 				"}\n";
 		return s;
 	}
 
-	String generateTypeDefinition(String type) {
+	String generateTypeDefinition(String genTypes) {
 		String result = "";
 		if (hideWarnings) {
 			result = "@SuppressWarnings(\"all\")\n";
@@ -38,10 +41,14 @@ public class Clazz extends JavaElement {
 		if (deprecate) {
 			result += "@Deprecated(forRemoval=true, since=\"some version\")\n";
 		}
-		if(useExtend) {
-			return result +	"public abstract class " + name + "<"+type+"> extends " + extend + "<"+type+"> implements " + implement + "<"+type+"> ";
+		if (addTest) {
+			result += "@org.junit.platform.commons.annotation.Testable\n";
+			return result +	"public class " + name + " extends " + extend + " implements " + implement;
 		}
-		return result +	"public abstract class " + name + "<"+type+"> ";
+		if(useExtend) {
+			return result +	"public class " + name + "<"+genTypes+"> extends " + extend + "<"+genTypes+"> implements " + implement + "<"+genTypes+"> ";
+		}
+		return result +	"public class " + name + "<"+genTypes+"> ";
 	}
 
 	String generateClassFields(String type) {
@@ -61,6 +68,7 @@ public class Clazz extends JavaElement {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < methodCounts; i++) {
 			String suffix = i == 0? "" : "" + i;
+			String functionType = i == 0? "Object" : type;
 			String result =	"\t public static " + name + " getInstance" + suffix + "() {\n" +
 				"\t \t return instance;\n" +
 				"\t }\n\n" +
@@ -80,7 +88,18 @@ public class Clazz extends JavaElement {
 				"\t public void set" + suffix + "(Object element) {\n" +
 				"\t \t this.element = ("+type+")element;\n" +
 				"\t \t " + extend + ".getInstance" + suffix + "().set" + suffix + "(this.element);\n" +
+				"\t }\n\n" +
+				"\t public " + functionType + " apply" + suffix + "("+functionType+" t) {\n" +
+				"\t 	return null;\n" +
+				"\t }\n\n"
+				;
+			if (addTest) {
+				result += 
+				"\t @org.junit.jupiter.api.Test\n" +
+				"\t public void test" + suffix + "() {\n" +
+				"\t \t return;\n" +
 				"\t }\n\n";
+			}
 			sb.append(result);
 		}
 		if(methodCounts > 0) {

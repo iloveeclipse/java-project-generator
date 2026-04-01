@@ -34,6 +34,7 @@ public class Main {
 		boolean hideWarnings = false;
 		boolean deepNestedTypes = true;
 		boolean deprecate = false;
+		boolean addTest = true;
 
 		if(args.length == 0) {
 			System.out.println("No arguments given, using defaults");
@@ -71,6 +72,7 @@ public class Main {
 		JavaElement.useExtend = extend;
 		JavaElement.hideWarnings = hideWarnings;
 		JavaElement.deprecate = deprecate;
+		JavaElement.addTest = addTest;
 
 		new JavaBuilder(depth, roots, classes, root, deepNestedTypes).build();
 	}

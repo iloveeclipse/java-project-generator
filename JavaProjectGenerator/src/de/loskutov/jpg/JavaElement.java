@@ -24,6 +24,7 @@ public abstract class JavaElement {
 	static boolean useExtend = true;
 	static boolean hideWarnings = true;
 	static boolean deprecate = true;
+	static boolean addTest = true;
 
 	static final List<String> IMPORTS = Arrays.asList(
 			"java.awt.datatransfer.*",

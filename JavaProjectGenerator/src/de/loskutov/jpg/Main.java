@@ -20,18 +20,18 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		String pathname = "./target/generated/";
 
-        int roots = 3;
-		int depth = 2;
-		int classes = 10;
+        int roots = 10;
+		int depth = 3;
+		int classes = 25;
 
-		int fields = 3;
-		int imports = 3;
-		int comments = 3;
-		int see = 3;
+		int fields = 1;
+		int imports = 1;
+		int comments = 1;
+		int see = 1;
 		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
 		int runnablesAndCallables = 1;
 		boolean extend = true;
-		boolean hideWarnings = false;
+		boolean hideWarnings = true;
 		boolean deepNestedTypes = true;
 		boolean deprecate = false;
 		boolean addTest = true;

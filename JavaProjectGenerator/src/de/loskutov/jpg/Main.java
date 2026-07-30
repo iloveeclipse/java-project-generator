@@ -27,6 +27,7 @@ public class Main {
 		int fields = 3;
 		int imports = 3;
 		int comments = 3;
+		int tasks = 3;
 		int see = 3;
 		int methods = 1; // result method count will be (methods x 6 + runnablesAndCallables x 2)
 		int runnablesAndCallables = 1;
@@ -55,6 +56,9 @@ public class Main {
 				//
 			}
 		}
+		if(tasks > 0 && comments <= 0) {
+			comments = 1;
+		}
 		File rootDir = new File(pathname);
 		Path root = rootDir.toPath();
 		System.out.println("Writing to "  + rootDir.getAbsolutePath());
@@ -66,6 +70,7 @@ public class Main {
 		JavaElement.fieldsCount = fields;
 		JavaElement.importsCount = imports;
 		JavaElement.commentsCount = comments;
+		JavaElement.tasksCount = tasks;
 		JavaElement.seeCount = see;
 		JavaElement.methodCounts = methods;
 		JavaElement.runnablesAndCallablesCounts = runnablesAndCallables;

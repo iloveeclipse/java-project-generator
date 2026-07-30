@@ -25,6 +25,7 @@ public abstract class JavaElement {
 	static boolean hideWarnings = true;
 	static boolean deprecate = true;
 	static boolean addTest = true;
+	public static int tasksCount = 3;
 
 	static final List<String> IMPORTS = Arrays.asList(
 			"java.awt.datatransfer.*",
@@ -92,14 +93,15 @@ public abstract class JavaElement {
 	static final List<String> LETTERS = IntStream.rangeClosed('A', 'Z').mapToObj(x -> String.valueOf((char)x))
 			.collect(Collectors.toList());
 
-
+	static final List<String> TASKS = Arrays.asList("TODO", "XXX", "FIXME");
 
 	String name;
 	String packageName;
 	static final Ring<String> imports = new Ring<>(IMPORTS);
 	static final Ring<String> fields = new Ring<>(FIELDS);
 	static final Ring<String> genTypes = new Ring<>(LETTERS);
-	final Ring<String> loremIpsum = new Ring<>(LOREM);
+	static final Ring<String> loremIpsum = new Ring<>(LOREM);
+	static final Ring<String> tasks = new Ring<>(TASKS);
 
 	JavaElement(String name, String packageName){
 		this.name = name;
@@ -121,7 +123,10 @@ public abstract class JavaElement {
 		StringBuilder sb = new StringBuilder();
 		if(commentsCount > 0) {
 			sb.append("/**\n");
-			for (int i = 0; i < commentsCount; i++) {
+			for (int i = 0; i < tasksCount; i++) {
+				sb.append(" * ").append(tasks.next()).append(" ").append(loremIpsum.next()).append("\n");
+			}
+			for (int i = 0; i < commentsCount - tasksCount; i++) {
 				sb.append(" * ").append(loremIpsum.next()).append("\n");
 			}
 			sb.append(" *\n");

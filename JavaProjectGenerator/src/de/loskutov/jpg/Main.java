@@ -21,8 +21,8 @@ public class Main {
 		String pathname = "./target/generated/";
 
         int roots = 3;
-		int depth = 2;
-		int classes = 10;
+		int depth = 3;
+		int classes = 1000;
 
 		int fields = 3;
 		int imports = 3;
@@ -33,7 +33,7 @@ public class Main {
 		int runnablesAndCallables = 1;
 		boolean extend = true;
 		boolean hideWarnings = false;
-		boolean deepNestedTypes = true;
+		boolean deepNestedTypes = false;
 		boolean deprecate = false;
 		boolean addTest = true;
 
